@@ -1,0 +1,5 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory `/Users/luisventuzelos/Documents/GitHub/cad-job-shop-problem'
+gcc-11 -Wall -fopenmp job-shop.c -o job-shop
+make: Leaving directory `/Users/luisventuzelos/Documents/GitHub/cad-job-shop-problem'
+ 

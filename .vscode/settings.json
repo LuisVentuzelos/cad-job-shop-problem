@@ -1,0 +1,13 @@
+{
+    "makefile.extensionOutputFolder": "./.vscode",
+    "files.associations": {
+        "__locale": "c",
+        "__threading_support": "c",
+        "locale": "c",
+        "thread": "c",
+        "*.tcc": "c",
+        "mutex": "c",
+        "stop_token": "c",
+        "variant": "c"
+    }
+}
