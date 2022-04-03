@@ -19,7 +19,7 @@ struct jobshop_
 } jobshop;
 
 
-int sheduleJobs()
+void sheduleJobs()
 {
 
     for (int i = 0; i < N; i++)

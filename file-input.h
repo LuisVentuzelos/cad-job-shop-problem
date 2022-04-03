@@ -1,9 +1,5 @@
 void readFile(const char *filePath)
 {
-    FILE *fp;
-    size_t len = 0;
-    ssize_t read;
-
     FILE *file = fopen(filePath, "r");
     char line[256];
 
