@@ -7,35 +7,32 @@
 struct operation_ {
     int machineId;
     int duration;
-} operation;
+};
 
 struct job_ {
-    int id;
     struct operation_ operations [N];
-} job;
+};
 
 struct machine_ {
     int id;
     int currentTime;
     int duration;
-} machine;
+};
 
+struct scheduler_ {
+    int startTime;
+    int duration;
+};
 
 struct jobshop_ {
     struct job_ jobs [N];
-    struct machine_ machines [N];
+    struct machine_ *machines [N];
+    struct scheduler_ scheduler [N][N];
 } jobshop;
-
-
-struct job_ jobs[N];
-struct machine_ *machines[N];
-int operationTime[N][N];
-int operationWork[N][N];
 
 int main(int argc, char *argv[]) {
 
-    jobs[0] = (struct job_) {
-        .id = 0,
+    jobshop.jobs[0] = (struct job_) {
         .operations = {
             {
                 .machineId = 0,
@@ -52,8 +49,7 @@ int main(int argc, char *argv[]) {
         }
     };
 
-    jobs[1] = (struct job_) {
-        .id = 1,
+    jobshop.jobs[1] = (struct job_) {
         .operations = {
             {
                 .machineId = 0,
@@ -70,8 +66,7 @@ int main(int argc, char *argv[]) {
         }
     };
 
-    jobs[2] = (struct job_) {
-        .id = 2,
+    jobshop.jobs[2] = (struct job_) {
         .operations = {
             {
                 .machineId = 1,
@@ -88,51 +83,55 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             
-            int machineId = jobs[j].operations[i].machineId;
+            int machineId = jobshop.jobs[j].operations[i].machineId;
             int durationBefore = 0;
             int timeBefore = 0;
             int totalBeforeTime = 0;
+            int currentOperationDuration = jobshop.jobs[j].operations[i].duration;
 
             if(i>0)
             {   
-                durationBefore  = jobs[j].operations[i-1].duration;
-                timeBefore = operationTime[j][i-1];
+                durationBefore  = jobshop.scheduler[j][i-1].duration;
+                timeBefore = jobshop.scheduler[j][i-1].startTime;
                 totalBeforeTime = timeBefore + durationBefore;
 
             }
 
-            if (machines[machineId] == NULL) {
+            if (jobshop.machines[machineId] == NULL) {
 
-                machines[machineId] = (struct machine_ *) malloc(sizeof(struct machine_));
-                machines[machineId]->id = machineId;
-                machines[machineId] -> currentTime = durationBefore + operationTime[j][i-1];
-                machines[machineId]->duration = jobs[j].operations[i].duration;     
+                jobshop.machines[machineId] = (struct machine_ *) malloc(sizeof(struct machine_));
+                jobshop.machines[machineId]->id = machineId;
+                jobshop.machines[machineId] -> currentTime = totalBeforeTime;
+                jobshop.machines[machineId]->duration = currentOperationDuration;    
 
             } 
 
-            else if(machines[machineId] != NULL) {
+            else if(jobshop.machines[machineId] != NULL) {
 
 
-                machines[machineId] -> currentTime = totalBeforeTime + (machines[machineId]->duration + machines[machineId]->currentTime) ;
-                machines[machineId]->duration = jobs[j].operations[i].duration;
+                jobshop.machines[machineId] -> currentTime = totalBeforeTime + (jobshop.machines[machineId]->duration + jobshop.machines[machineId]->currentTime) ;
+                jobshop.machines[machineId]->duration = currentOperationDuration;
 
 
             }
-            
-            operationTime[j][i] = machines[machineId]->currentTime;
-            operationWork[j][i] = machines[machineId]->duration;
+
+            jobshop.scheduler[j][i] = (struct scheduler_) {
+                .startTime = jobshop.machines[machineId]->currentTime,
+                .duration = jobshop.machines[machineId]->duration
+            };
 
            }
     }
 
     for (int i = 0; i < N; i++) {
-        printf("Machine %d\n", machines[i]->id);
-        printf("\tDuration: %d\n", machines[i]->currentTime);
+        printf("Machine %d\n", jobshop.machines[i]->id);
+        printf("\tStartTime: %d\n", jobshop.machines[i]->currentTime);
+        printf("\tDuration: %d\n", jobshop.machines[i]->duration);
     }
 
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            printf("%d ", operationTime[i][j]);
+            printf("%d ", jobshop.scheduler[i][j].startTime);
         }
         printf("\n");
     }
