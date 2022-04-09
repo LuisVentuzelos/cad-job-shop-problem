@@ -8,7 +8,6 @@ Simple Job Shop Problem C Algorithm for Computação de Alto Desempenho discipli
 - [@Ricardo Faria](https://www.github.com/RicardoMSFaria)
 - [@João Cunha](https://www.github.com/JCunha99)
 
-![Logo](https://ipca.pt/wp-content/uploads/2016/07/IPCA-Logo_rgb_v2.png)
 
 ## Compile
 
