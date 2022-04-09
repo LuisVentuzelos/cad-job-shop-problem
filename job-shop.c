@@ -1,29 +1,75 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <stdlib.h>
+#include <string.h>
 #include "data-structs.h"
-#include "file-input.h"
+//#include "file-input.h"
 
-#define N 3
+#define MAXBUFLEN 1000000
+#define NUMBER_OF_JOBS 3
+#define NUMBER_OF_MACHINES 3
+#define NUMBER_OF_OPERATIONS 3
+
+#define MAX 100
 
 struct job_
 {
-    struct operation_ operations[N];
+    struct operation_ operations[MAX];
 };
 
 struct jobshop_
 {
-    struct job_ jobs[N];
-    struct machine_ *machines[N];
-    struct scheduler_ scheduler[N][N];
+    struct job_ jobs[MAX];
+    struct machine_ *machines[MAX];
+    struct scheduler_ scheduler[MAX][MAX];
 } jobshop;
+
+void readFile(const char *filePath, int *machines, int *jobs, int *operations)
+{
+    FILE *file = fopen(filePath, "r");
+    char line[256];
+    int i, j = 0;
+
+    while (fgets(line, sizeof(line), file))
+    {
+        if (i == 0)
+        {
+            *machines = atoi(line);
+        }
+        else if (i == 1)
+            *jobs = atoi(line);
+        else if (i == 2)
+            *operations = atoi(line);
+        else
+        {
+            int k = 0;
+            char *token = strtok(line, " ");
+            for (k = 0; k < *operations; k++)
+            {
+                printf("%s\n", token);
+                jobshop.jobs[j].operations[k].machineId = atoi(token);
+                token = strtok(NULL, " ");
+                printf("%s\n", token);
+                jobshop.jobs[j].operations[k].duration = atoi(token);
+                token = strtok(NULL, " ");
+            }
+            j++;
+        }
+
+        i++;
+    }
+
+    printf("%d %d %d\n", *machines, *jobs, *operations);
+
+    fclose(file);
+}
 
 void sheduleJobs()
 {
 
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < NUMBER_OF_JOBS; i++)
     {
-        for (int j = 0; j < N; j++)
+        for (int j = 0; j < NUMBER_OF_OPERATIONS; j++)
         {
 
             int machineId = jobshop.jobs[j].operations[i].machineId;
@@ -77,58 +123,41 @@ void sheduleJobs()
 
 int main(int argc, char *argv[])
 {
-
     if (argc != 2)
     {
         fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
         return 1;
     }
 
-    jobshop.jobs[0] = (struct job_){
-        .operations = {
-            {.machineId = 0,
-             .duration = 3},
-            {.machineId = 1,
-             .duration = 2},
-            {.machineId = 2,
-             .duration = 2}}};
-
-    jobshop.jobs[1] = (struct job_){
-        .operations = {
-            {.machineId = 0,
-             .duration = 2},
-            {.machineId = 2,
-             .duration = 1},
-            {.machineId = 1,
-             .duration = 4}}};
-
-    jobshop.jobs[2] = (struct job_){
-        .operations = {
-            {.machineId = 1,
-             .duration = 4},
-            {.machineId = 2,
-             .duration = 3},
-            {.machineId = 1,
-             .duration = 1}}};
-
     char const *const fileName = argv[1];
 
-    // readFile(fileName);
+    int numberOfJobs = 0;
+    int numberOfMachines = 0;
+    int numberOfOperations = 0;
+
+    readFile(fileName, &numberOfMachines, &numberOfJobs, &numberOfOperations);
+
+    printf("Number of Jobs: %d\n", numberOfJobs);
+    printf("Number of Machines: %d\n", numberOfMachines);
+    printf("Number of Operations: %d\n", numberOfOperations);
 
     sheduleJobs();
 
-    // for (int i = 0; i < N; i++)
-    //{
-    //     printf("Machine %d\n", jobshop.machines[i]->id);
-    //     printf("\tStartTime: %d\n", jobshop.machines[i]->currentTime);
-    //     printf("\tDuration: %d\n", jobshop.machines[i]->duration);
-    // }
+    printf("################ EntryPoint ##################\n");
 
+    for (int i = 0; i < NUMBER_OF_JOBS; i++)
+    {
+        for (int j = 0; j < NUMBER_OF_OPERATIONS; j++)
+        {
+            printf("(%d,%d)\t", jobshop.jobs[i].operations[j].machineId, jobshop.jobs[i].operations[j].duration);
+        }
+        printf("\n");
+    }
     printf("################ TIME ##################\n");
 
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < NUMBER_OF_JOBS; i++)
     {
-        for (int j = 0; j < N; j++)
+        for (int j = 0; j < NUMBER_OF_OPERATIONS; j++)
         {
             printf("%d ", jobshop.scheduler[i][j].startTime);
         }
