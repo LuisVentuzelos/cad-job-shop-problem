@@ -9,6 +9,20 @@
         "mutex": "c",
         "stop_token": "c",
         "variant": "c",
-        "iosfwd": "c"
+        "iosfwd": "c",
+        "__availability": "c",
+        "atomic": "c",
+        "bitset": "c",
+        "iterator": "c",
+        "string": "c",
+        "optional": "c",
+        "string_view": "c",
+        "functional": "c",
+        "random": "c",
+        "istream": "c",
+        "numeric": "c",
+        "ostream": "c",
+        "streambuf": "c",
+        "tuple": "c"
     }
 }

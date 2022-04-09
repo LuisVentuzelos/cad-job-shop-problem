@@ -18,7 +18,6 @@ struct jobshop_
     struct scheduler_ scheduler[N][N];
 } jobshop;
 
-
 void sheduleJobs()
 {
 
@@ -51,8 +50,21 @@ void sheduleJobs()
 
             else if (jobshop.machines[machineId] != NULL)
             {
+                int currentMachineTime = jobshop.machines[machineId]->duration + jobshop.machines[machineId]->currentTime;
 
-                jobshop.machines[machineId]->currentTime = totalBeforeTime + (jobshop.machines[machineId]->duration + jobshop.machines[machineId]->currentTime);
+                int totalTime = 0;
+
+                if (currentMachineTime > totalBeforeTime)
+                {
+
+                    totalTime = currentMachineTime;
+                }
+                else
+                {
+                    totalTime = totalBeforeTime + currentMachineTime;
+                }
+
+                jobshop.machines[machineId]->currentTime = totalTime;
                 jobshop.machines[machineId]->duration = currentOperationDuration;
             }
 
@@ -95,20 +107,24 @@ int main(int argc, char *argv[])
             {.machineId = 1,
              .duration = 4},
             {.machineId = 2,
-             .duration = 3}}};
+             .duration = 3},
+            {.machineId = 1,
+             .duration = 1}}};
 
     char const *const fileName = argv[1];
 
-    readFile(fileName);
+    // readFile(fileName);
 
     sheduleJobs();
 
-    for (int i = 0; i < N; i++)
-    {
-        printf("Machine %d\n", jobshop.machines[i]->id);
-        printf("\tStartTime: %d\n", jobshop.machines[i]->currentTime);
-        printf("\tDuration: %d\n", jobshop.machines[i]->duration);
-    }
+    // for (int i = 0; i < N; i++)
+    //{
+    //     printf("Machine %d\n", jobshop.machines[i]->id);
+    //     printf("\tStartTime: %d\n", jobshop.machines[i]->currentTime);
+    //     printf("\tDuration: %d\n", jobshop.machines[i]->duration);
+    // }
+
+    printf("################ TIME ##################\n");
 
     for (int i = 0; i < N; i++)
     {
