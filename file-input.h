@@ -1,4 +1,3 @@
-
 void readFile(const char *filePath, int *machines, int *jobs, int *operations)
 {
     FILE *file = fopen(filePath, "r");
@@ -21,10 +20,8 @@ void readFile(const char *filePath, int *machines, int *jobs, int *operations)
             char *token = strtok(line, " ");
             for (k = 0; k < *operations; k++)
             {
-                printf("%s\n", token);
                 jobshop.jobs[j].operations[k].machineId = atoi(token);
                 token = strtok(NULL, " ");
-                printf("%s\n", token);
                 jobshop.jobs[j].operations[k].duration = atoi(token);
                 token = strtok(NULL, " ");
             }
@@ -33,8 +30,6 @@ void readFile(const char *filePath, int *machines, int *jobs, int *operations)
 
         i++;
     }
-
-    printf("%d %d %d\n", *machines, *jobs, *operations);
 
     fclose(file);
 }

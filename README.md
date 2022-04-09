@@ -1,17 +1,49 @@
 # cad-job-shop-problem
 
-Job Shop Problem C implementation
+Simple Job Shop Problem C Algorithm for Computação de Alto Desempenho discipline of IPCA (Polytechnic Institute of Cávado and Ave)
 
-# Fisher and Thompson 3x3 instance, alternate name (mt06)
+## Autores
 
-#1 - Document composition
-#2 - Number of Machines
-#3 - Number of Jobs
-#4 - Number of Operations per Job
-#5 - Matrix of processing times and machine allocation
+- [@Luis Ventuzelos](https://www.github.com/LuisVentuzelos)
+- [@Ricardo Faria](https://www.github.com/RicardoMSFaria)
+- [@João Cunha](https://www.github.com/JCunha99)
+
+![Logo](https://ipca.pt/wp-content/uploads/2016/07/IPCA-Logo_rgb_v2.png)
+
+## Compile
+
+To compile the Application run the following command
+
+```bash
+  make normal
+```
+
+## Run
+
+To run the Application run the following command
+
+```bash
+   ./job-shop data/input01
+```
+
+## Appendix
+
+### Fisher and Thompson 3x3 instance example for the job shop problem
+
+#1 - Number of Machines
+
+#2 - Number of Jobs
+
+#3 - Number of Operations per Job
+
+#4 - Matrix of processing times and machine allocation
+
+```bash
 3
 3
 3
 0 3 1 2 2 2
 0 2 2 1 1 4
 1 4 2 3 0 0
+
+```

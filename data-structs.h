@@ -1,3 +1,5 @@
+#define MAX 100
+
 struct machine_
 {
     int id;
@@ -16,3 +18,15 @@ struct operation_
     int machineId;
     int duration;
 };
+
+struct job_
+{
+    struct operation_ operations[MAX];
+};
+
+struct jobshop_
+{
+    struct job_ jobs[MAX];
+    struct machine_ *machines[MAX];
+    struct scheduler_ scheduler[MAX][MAX];
+} jobshop;
