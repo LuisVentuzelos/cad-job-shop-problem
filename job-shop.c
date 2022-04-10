@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "data-structs.h"
-#include "file-input.h"
+#include "file-operation.h"
 
 void sheduleJobs(int numberOfJobs, int numberOfOperations)
 {
@@ -65,13 +65,14 @@ void sheduleJobs(int numberOfJobs, int numberOfOperations)
 int main(int argc, char *argv[])
 {
 
-    if (argc != 2)
+    if (argc != 3)
     {
-        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
+        printf("Usage: ./job-shop <input-file> <output-file>\n");
         return 1;
     }
 
     char const *const fileName = argv[1];
+    char const *const outputFileName = argv[2];
 
     int numberOfJobs = 0;
     int numberOfMachines = 0;
@@ -105,13 +106,24 @@ int main(int argc, char *argv[])
     printf("################ Scheduler Atribution ##################\n");
     printf("\n");
 
+    FILE *fptr;
+
+    fptr = fopen(outputFileName, "w");
+    char result[50];
+
     for (int i = 0; i < numberOfJobs; i++)
     {
         for (int j = 0; j < numberOfOperations; j++)
         {
-            printf("%d ", jobshop.scheduler[i][j].startTime);
+            int startTime = jobshop.scheduler[i][j].startTime;
+
+            sprintf(result, "%d", startTime);
+
+            printf("%s ", result);
+            fprintf(fptr, "%s ", result);
         }
         printf("\n");
+        fprintf(fptr, "\n");
     }
 
     printf("\n");

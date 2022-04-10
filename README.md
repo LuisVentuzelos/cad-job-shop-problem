@@ -8,7 +8,6 @@ Simple Job Shop Problem C Algorithm for Computação de Alto Desempenho discipli
 - [@Ricardo Faria](https://www.github.com/RicardoMSFaria)
 - [@João Cunha](https://www.github.com/JCunha99)
 
-
 ## Compile
 
 To compile the Application run the following command
@@ -22,7 +21,7 @@ To compile the Application run the following command
 To run the Application run the following command
 
 ```bash
-   ./job-shop data/input01
+   ./job-shop data/input01 output/output01
 ```
 
 ## Appendix

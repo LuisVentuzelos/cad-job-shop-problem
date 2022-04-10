@@ -1,15 +1,13 @@
 void readFile(const char *filePath, int *machines, int *jobs, int *operations)
 {
     FILE *file = fopen(filePath, "r");
-    char line[256];
+    char line[1000];
     int i, j = 0;
 
     while (fgets(line, sizeof(line), file))
     {
         if (i == 0)
-        {
             *machines = atoi(line);
-        }
         else if (i == 1)
             *jobs = atoi(line);
         else if (i == 2)
