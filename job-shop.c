@@ -5,8 +5,14 @@
 #include "data-structs.h"
 #include "file-operation.h"
 
-void sheduleJobs(int numberOfJobs, int numberOfOperations)
+void sheduleJobs(int numberOfJobs, int numberOfOperations, int numberOfMachines)
 {
+
+    /*     for (int machineId = 0; machineId < numberOfMachines; machineId++)
+        {
+            jobshop.machines[machineId] = (struct machine_ *)malloc(sizeof(struct machine_));
+            jobshop.machines[machineId]->id = machineId;
+        } */
 
     for (int i = 0; i < numberOfJobs; i++)
     {
@@ -42,14 +48,9 @@ void sheduleJobs(int numberOfJobs, int numberOfOperations)
                 int totalTime = 0;
 
                 if (currentMachineTime > totalBeforeTime)
-                {
-
                     totalTime = currentMachineTime;
-                }
                 else
-                {
-                    totalTime = totalBeforeTime + currentMachineTime;
-                }
+                    totalTime = totalBeforeTime;
 
                 jobshop.machines[machineId]->currentTime = totalTime;
                 jobshop.machines[machineId]->duration = currentOperationDuration;
@@ -87,7 +88,7 @@ int main(int argc, char *argv[])
     printf("Number of Machines: %d\n", numberOfMachines);
     printf("Number of Operations: %d\n", numberOfOperations);
 
-    sheduleJobs(numberOfJobs, numberOfOperations);
+    sheduleJobs(numberOfJobs, numberOfOperations, numberOfMachines);
 
     printf("\n");
     printf("################ EntryPoint Matrix ##################\n");
