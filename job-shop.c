@@ -5,59 +5,42 @@
 #include "data-structs.h"
 #include "file-operation.h"
 
+void allocateMachines(int numberOfMachines)
+{
+    for (int machine = 0; machine < numberOfMachines; machine++)
+    {
+        jobshop.machines[machine] = (struct machine_ *)malloc(sizeof(struct machine_));
+        jobshop.machines[machine]->id = machine;
+    }
+}
+
 void sheduleJobs(int numberOfJobs, int numberOfOperations, int numberOfMachines)
 {
-
-    /*     for (int machineId = 0; machineId < numberOfMachines; machineId++)
-        {
-            jobshop.machines[machineId] = (struct machine_ *)malloc(sizeof(struct machine_));
-            jobshop.machines[machineId]->id = machineId;
-        } */
 
     for (int i = 0; i < numberOfJobs; i++)
     {
         for (int j = 0; j < numberOfOperations; j++)
         {
+            int totalTime = 0;
 
             int machineId = jobshop.jobs[j].operations[i].machineId;
-            int durationBefore = 0;
-            int timeBefore = 0;
-            int totalBeforeTime = 0;
-            int currentOperationDuration = jobshop.jobs[j].operations[i].duration;
 
-            if (i > 0)
-            {
-                durationBefore = jobshop.scheduler[j][i - 1].duration;
-                timeBefore = jobshop.scheduler[j][i - 1].startTime;
-                totalBeforeTime = timeBefore + durationBefore;
-            }
+            int operationBeforeDuration = jobshop.scheduler[j][i - 1].duration;
+            int operationBeforeStartTime = jobshop.scheduler[j][i - 1].startTime;
+            int operationTotalBeforeTime = operationBeforeStartTime + operationBeforeDuration;
 
-            if (jobshop.machines[machineId] == NULL)
-            {
+            int currentMachineTime = jobshop.machines[machineId]->startTime + jobshop.machines[machineId]->duration;
 
-                jobshop.machines[machineId] = (struct machine_ *)malloc(sizeof(struct machine_));
-                jobshop.machines[machineId]->id = machineId;
-                jobshop.machines[machineId]->currentTime = totalBeforeTime;
-                jobshop.machines[machineId]->duration = currentOperationDuration;
-            }
+            if (currentMachineTime > operationTotalBeforeTime)
+                totalTime = currentMachineTime;
+            else
+                totalTime = operationTotalBeforeTime;
 
-            else if (jobshop.machines[machineId] != NULL)
-            {
-                int currentMachineTime = jobshop.machines[machineId]->duration + jobshop.machines[machineId]->currentTime;
-
-                int totalTime = 0;
-
-                if (currentMachineTime > totalBeforeTime)
-                    totalTime = currentMachineTime;
-                else
-                    totalTime = totalBeforeTime;
-
-                jobshop.machines[machineId]->currentTime = totalTime;
-                jobshop.machines[machineId]->duration = currentOperationDuration;
-            }
+            jobshop.machines[machineId]->startTime = totalTime;
+            jobshop.machines[machineId]->duration = jobshop.jobs[j].operations[i].duration;
 
             jobshop.scheduler[j][i] = (struct scheduler_){
-                .startTime = jobshop.machines[machineId]->currentTime,
+                .startTime = jobshop.machines[machineId]->startTime,
                 .duration = jobshop.machines[machineId]->duration};
         }
     }
@@ -88,8 +71,6 @@ int main(int argc, char *argv[])
     printf("Number of Machines: %d\n", numberOfMachines);
     printf("Number of Operations: %d\n", numberOfOperations);
 
-    sheduleJobs(numberOfJobs, numberOfOperations, numberOfMachines);
-
     printf("\n");
     printf("################ EntryPoint Matrix ##################\n");
     printf("\n");
@@ -103,29 +84,13 @@ int main(int argc, char *argv[])
         printf("\n");
     }
 
+    allocateMachines(numberOfMachines);
+
+    sheduleJobs(numberOfJobs, numberOfOperations, numberOfMachines);
+
     printf("\n");
     printf("################ Scheduler Atribution ##################\n");
     printf("\n");
 
-    FILE *fptr;
-
-    fptr = fopen(outputFileName, "w");
-    char result[50];
-
-    for (int i = 0; i < numberOfJobs; i++)
-    {
-        for (int j = 0; j < numberOfOperations; j++)
-        {
-            int startTime = jobshop.scheduler[i][j].startTime;
-
-            sprintf(result, "%d", startTime);
-
-            printf("%s ", result);
-            fprintf(fptr, "%s ", result);
-        }
-        printf("\n");
-        fprintf(fptr, "\n");
-    }
-
-    printf("\n");
+    writeToFileAndPrettyPrint(outputFileName, numberOfJobs, numberOfOperations);
 }

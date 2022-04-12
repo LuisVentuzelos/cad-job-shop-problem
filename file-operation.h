@@ -31,3 +31,28 @@ void readFile(const char *filePath, int *machines, int *jobs, int *operations)
 
     fclose(file);
 }
+
+void writeToFileAndPrettyPrint(const char *filePath, int jobs, int operations)
+{
+    FILE *fptr;
+
+    fptr = fopen(filePath, "w");
+    char result[50];
+
+    for (int i = 0; i < jobs; i++)
+    {
+        for (int j = 0; j < operations; j++)
+        {
+            int startTime = jobshop.scheduler[i][j].startTime;
+
+            sprintf(result, "%d", startTime);
+
+            printf("%s ", result);
+            fprintf(fptr, "%s ", result);
+        }
+        printf("\n");
+        fprintf(fptr, "\n");
+    }
+
+    printf("\n");
+}

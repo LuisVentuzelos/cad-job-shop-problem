@@ -3,7 +3,7 @@
 struct machine_
 {
     int id;
-    int currentTime;
+    int startTime;
     int duration;
 };
 
