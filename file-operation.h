@@ -39,6 +39,10 @@ void writeToFileAndPrettyPrint(const char *filePath, int jobs, int operations)
     fptr = fopen(filePath, "w");
     char result[50];
 
+    printf("\n");
+    printf("################ Scheduler Atribution ##################\n");
+    printf("\n");
+
     for (int i = 0; i < jobs; i++)
     {
         for (int j = 0; j < operations; j++)

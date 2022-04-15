@@ -6,7 +6,7 @@
 #include "data-structs.h"
 #include "file-operation.h"
 
-long long thread_count = 3; // set to number threads
+long long thread_count = 4; // set to number threads
 pthread_mutex_t mutex;
 pthread_cond_t cond_var;
 
@@ -49,26 +49,26 @@ void *sheduleJobs(void *rank)
     {
         for (int job = 0; job < numberOfJobs; job++)
         {
-
-            int totalTime = 0;
-            int machineId = jobshop.jobs[job].operations[operation].machineId;
-            int operationBeforeDuration = jobshop.jobs[job].operations[operation - 1].duration;
-
-            while (operation > 0 && jobshop.scheduler[job][operation - 1]->assigned == 0)
+            /*             while (0 < operation && (jobshop.scheduler[job][operation - 1]->assigned == 0 && (job + 1 < numberOfJobs && jobshop.scheduler[job + 1][operation - 1]->assigned == 0))) */
+            while (0 < operation && jobshop.scheduler[job][operation - 1]->assigned == 0)
             {
                 pthread_cond_wait(&cond_var, &mutex);
             }
 
+            int totalTime = 0;
+            int operationBeforeStartTime = 0;
+
+            int machineId = jobshop.jobs[job].operations[operation].machineId;
+            int operationBeforeDuration = jobshop.jobs[job].operations[operation - 1].duration;
+
+            if (operation > 0)
+                operationBeforeStartTime = jobshop.scheduler[job][operation - 1]->startTime;
+
+            int operationTotalBeforeTime = operationBeforeStartTime + operationBeforeDuration;
+
             pthread_mutex_lock(&mutex);
 
             int currentMachineTime = jobshop.machines[machineId]->startTime + jobshop.machines[machineId]->duration;
-            int operationBeforeStartTime = 0;
-
-            if (operation > 0)
-            {
-                operationBeforeStartTime = jobshop.scheduler[job][operation - 1]->startTime;
-            }
-            int operationTotalBeforeTime = operationBeforeStartTime + operationBeforeDuration;
 
             if (currentMachineTime > operationTotalBeforeTime)
                 totalTime = currentMachineTime;
@@ -84,6 +84,9 @@ void *sheduleJobs(void *rank)
 
             pthread_cond_broadcast(&cond_var);
             pthread_mutex_unlock(&mutex);
+
+            if (job == 2 && operation == 1)
+                printf("Job: %d\n Operation: %d\n Scheduler Start Time: %d\n Time before assginment:%d Time crux assginment:%d\n", job, operation, jobshop.scheduler[job][operation]->startTime, jobshop.scheduler[job][operation - 1]->assigned, jobshop.scheduler[job + 1][operation - 1]->assigned);
         }
     }
 
@@ -146,18 +149,11 @@ int main(int argc, char *argv[])
     for (thread = 0; thread < thread_count; thread++)
         pthread_create(&thread_handles[thread], NULL, sheduleJobs, (void *)thread);
 
-    // sheduleJobs(numberOfJobs, numberOfOperations, numberOfMachines);
-
     for (thread = 0; thread < thread_count; thread++)
         pthread_join(thread_handles[thread], NULL);
-    //...
 
     free(thread_handles);
     pthread_mutex_destroy(&mutex);
-
-    printf("\n");
-    printf("################ Scheduler Atribution ##################\n");
-    printf("\n");
 
     writeToFileAndPrettyPrint(outputFileName, numberOfJobs, numberOfOperations);
 }
