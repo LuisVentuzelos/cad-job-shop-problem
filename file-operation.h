@@ -43,7 +43,7 @@ void writeToFileAndPrettyPrint(const char *filePath, int jobs, int operations)
     {
         for (int j = 0; j < operations; j++)
         {
-            int startTime = jobshop.scheduler[i][j].startTime;
+            int startTime = jobshop.scheduler[i][j]->startTime;
 
             sprintf(result, "%d", startTime);
 
