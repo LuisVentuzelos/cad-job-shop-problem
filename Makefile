@@ -1,7 +1,8 @@
 # My first makefile
 
-openmp: 
-	gcc-11 -Wall -fopenmp job-shop.c -o job-shop
+threads: 
+	gcc-11 -Wall -fopenmp -lpthread job-shop-threads.c -o job-shop-threads
+
 
 normal: 
 	gcc-11 -Wall job-shop.c -o job-shop

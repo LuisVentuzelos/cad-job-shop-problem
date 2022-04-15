@@ -16,12 +16,26 @@ To compile the Application run the following command
   make normal
 ```
 
-## Run
+To compile the Application with threads run the following command
+
+```bash
+  make threads
+```
+
+## Run the Application without threads
 
 To run the Application run the following command
 
 ```bash
    ./job-shop data/input01 output/output01
+```
+
+## Run the Application with threads
+
+To run the Application run the following command
+
+```bash
+   ./job-shop-threads data/input01 5 output/output01
 ```
 
 ## Appendix
