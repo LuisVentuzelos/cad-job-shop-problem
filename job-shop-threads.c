@@ -6,7 +6,7 @@
 #include "data-structs.h"
 #include "file-operation.h"
 
-long long thread_count = 4; // set to number threads
+long long thread_count = 3; // set to number threads
 pthread_mutex_t mutex;
 pthread_cond_t cond_var;
 
@@ -26,6 +26,7 @@ void allocateMachines(int numberOfMachines)
 
 void allocateScheduler(int numberOfJobs, int numberOfOperations)
 {
+#pragma omp parallel for
     for (int job = 0; job < numberOfJobs; job++)
     {
         for (int operation = 0; operation < numberOfOperations; operation++)
@@ -85,8 +86,8 @@ void *sheduleJobs(void *rank)
             pthread_cond_broadcast(&cond_var);
             pthread_mutex_unlock(&mutex);
 
-            if (job == 2 && operation == 1)
-                printf("Job: %d\n Operation: %d\n Scheduler Start Time: %d\n Time before assginment:%d Time crux assginment:%d\n", job, operation, jobshop.scheduler[job][operation]->startTime, jobshop.scheduler[job][operation - 1]->assigned, jobshop.scheduler[job + 1][operation - 1]->assigned);
+            /* if (job == 2 && operation == 1)
+                printf("Job: %d\n Operation: %d\n Scheduler Start Time: %d\n Time before assginment:%d Time crux assginment:%d\n", job, operation, jobshop.scheduler[job][operation]->startTime, jobshop.scheduler[job][operation - 1]->assigned, jobshop.scheduler[job + 1][operation - 1]->assigned); */
         }
     }
 

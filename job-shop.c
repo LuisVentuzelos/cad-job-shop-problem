@@ -14,19 +14,35 @@ void allocateMachines(int numberOfMachines)
     }
 }
 
+void allocateScheduler(int numberOfJobs, int numberOfOperations)
+{
+    for (int job = 0; job < numberOfJobs; job++)
+    {
+        for (int operation = 0; operation < numberOfOperations; operation++)
+        {
+            jobshop.scheduler[job][operation] = (struct scheduler_ *)malloc(sizeof(struct scheduler_));
+            jobshop.scheduler[job][operation]->assigned = 0;
+        }
+    }
+}
+
 void sheduleJobs(int numberOfJobs, int numberOfOperations, int numberOfMachines)
 {
 
-    for (int i = 0; i < numberOfJobs; i++)
+    for (int operation = 0; operation < numberOfOperations; operation++)
     {
-        for (int j = 0; j < numberOfOperations; j++)
+        for (int job = 0; job < numberOfJobs; job++)
         {
             int totalTime = 0;
+            int operationBeforeStartTime = 0;
 
-            int machineId = jobshop.jobs[j].operations[i].machineId;
+            int machineId = jobshop.jobs[job].operations[operation].machineId;
 
-            int operationBeforeDuration = jobshop.scheduler[j][i - 1].duration;
-            int operationBeforeStartTime = jobshop.scheduler[j][i - 1].startTime;
+            int operationBeforeDuration = jobshop.jobs[job].operations[operation - 1].duration;
+
+            if (operation > 0)
+                operationBeforeStartTime = jobshop.scheduler[job][operation - 1]->startTime;
+
             int operationTotalBeforeTime = operationBeforeStartTime + operationBeforeDuration;
 
             int currentMachineTime = jobshop.machines[machineId]->startTime + jobshop.machines[machineId]->duration;
@@ -37,11 +53,11 @@ void sheduleJobs(int numberOfJobs, int numberOfOperations, int numberOfMachines)
                 totalTime = operationTotalBeforeTime;
 
             jobshop.machines[machineId]->startTime = totalTime;
-            jobshop.machines[machineId]->duration = jobshop.jobs[j].operations[i].duration;
+            jobshop.machines[machineId]->duration = jobshop.jobs[job].operations[operation].duration;
 
-            jobshop.scheduler[j][i] = (struct scheduler_){
-                .startTime = jobshop.machines[machineId]->startTime,
-                .duration = jobshop.machines[machineId]->duration};
+            jobshop.scheduler[job][operation]->startTime = jobshop.machines[machineId]->startTime;
+            jobshop.scheduler[job][operation]->duration = jobshop.machines[machineId]->duration;
+            jobshop.scheduler[job][operation]->assigned = 1;
         }
     }
 }
@@ -85,12 +101,9 @@ int main(int argc, char *argv[])
     }
 
     allocateMachines(numberOfMachines);
+    allocateScheduler(numberOfJobs, numberOfOperations);
 
     sheduleJobs(numberOfJobs, numberOfOperations, numberOfMachines);
-
-    printf("\n");
-    printf("################ Scheduler Atribution ##################\n");
-    printf("\n");
 
     writeToFileAndPrettyPrint(outputFileName, numberOfJobs, numberOfOperations);
 }
