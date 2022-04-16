@@ -5,7 +5,6 @@ struct machine_
     int id;
     int startTime;
     int duration;
-    int busy;
 };
 
 struct scheduler_

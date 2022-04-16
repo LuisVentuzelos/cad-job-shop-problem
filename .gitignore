@@ -51,5 +51,6 @@ Module.symvers
 Mkfile.old
 dkms.conf
 job-shop
+job-shop-threads
 
 .DS_Store
