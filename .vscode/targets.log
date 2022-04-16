@@ -10,7 +10,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target `all'.  Stop.
 
 
-# Make data base, printed on Tue Apr 12 20:36:38 2022
+# Make data base, printed on Fri Apr 15 19:05:02 2022
 
 # Variables
 
@@ -43,13 +43,11 @@ __CFBundleIdentifier = com.microsoft.VSCode
 # environment
 INFOPATH = /opt/homebrew/share/info:
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/35/1b3fktsx7bg4qhy8kpp2g7340000gn/T/vscode-ipc-c1479dcd-7512-4597-a8a7-86d69225cab2.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/35/1b3fktsx7bg4qhy8kpp2g7340000gn/T/vscode-ipc-3806c664-3a20-4ce6-ba3d-c2603dacdf4d.sock
 # environment
 VSCODE_CWD = /
 # environment
 PATH = /opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion Tech Preview.app/Contents/Public:/Library/Apple/usr/bin
-# environment
-LaunchInstanceID = 37AF73E1-A203-4298-AC21-47A9C4E1D3DB
 # environment
 VSCODE_LOG_STACK = false
 # environment
@@ -77,7 +75,7 @@ HOME = /Users/luisventuzelos
 # default
 MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/luisventuzelos/Library/Application Support/Code/CachedData/8dfae7a5cd50421d10cd99cb873990460525a898
+VSCODE_CODE_CACHE_PATH = /Users/luisventuzelos/Library/Application Support/Code/CachedData/dfd34e8260c270da74b5c2d86d61aee4b6d56977
 # environment
 LOGNAME = luisventuzelos
 # environment
@@ -99,7 +97,7 @@ MAKE_VERSION := 3.81
 # environment
 USER = luisventuzelos
 # makefile
-.DEFAULT_GOAL := openmp
+.DEFAULT_GOAL := threads
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # default
@@ -111,7 +109,7 @@ TMPDIR = /var/folders/35/1b3fktsx7bg4qhy8kpp2g7340000gn/T/
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/luisventuzelos/Library/Application Support/Code/1.66.1-main.sock
+VSCODE_IPC_HOOK = /Users/luisventuzelos/Library/Application Support/Code/1.66.2-main.sock
 # makefile
 MAKEFLAGS = Rrqp
 # environment
@@ -119,7 +117,7 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.13145312.13145318
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.13417980.13417986
 # environment
 HOMEBREW_PREFIX = /opt/homebrew
 # automatic
@@ -138,8 +136,6 @@ MAKEFILES :=
 <F = $(notdir $<)
 # environment
 LC_ALL = C
-# environment
-SECURITYSESSIONID = 186a5
 # automatic
 ^F = $(notdir $^)
 # default
@@ -151,9 +147,9 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 484
+VSCODE_PID = 94719
 # variable set hash-table stats:
-# Load=69/1024=7%, Rehash=0, Collisions=1/93=1%
+# Load=67/1024=7%, Rehash=0, Collisions=1/91=1%
 
 # Pattern-specific Variable Values
 
@@ -161,9 +157,9 @@ VSCODE_PID = 484
 
 # Directories
 
-# . (device 16777231, inode 12575766): 15 files, no impossibilities.
+# . (device 16777231, inode 12575766): 17 files, no impossibilities.
 
-# 15 files, no impossibilities in 1 directories.
+# 17 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -175,7 +171,7 @@ noWarnings:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 10):
+#  commands to execute (from `Makefile', line 11):
 	gcc-11 job-shop.c -o job-shop
 	
 
@@ -197,11 +193,19 @@ all:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-04-02 16:22:45
+#  Last modified 2022-04-15 14:24:02
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+threads:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 4):
+	gcc-11 -Wall -fopenmp -lpthread job-shop-threads.c -o job-shop-threads
+	
 
 # Not a target:
 .DEFAULT:
@@ -213,7 +217,7 @@ clean:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 13):
+#  commands to execute (from `Makefile', line 14):
 	rm -rf *.o *~ job-shop
 	
 
@@ -221,16 +225,8 @@ normal:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 7):
+#  commands to execute (from `Makefile', line 8):
 	gcc-11 -Wall job-shop.c -o job-shop
-	
-
-openmp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 4):
-	gcc-11 -Wall -fopenmp job-shop.c -o job-shop
 	
 
 # files hash-table stats:
@@ -246,6 +242,6 @@ openmp:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Tue Apr 12 20:36:38 2022
+# Finished Make data base on Fri Apr 15 19:05:02 2022
 
  

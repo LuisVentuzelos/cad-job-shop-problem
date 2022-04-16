@@ -11,6 +11,7 @@ struct scheduler_
 {
     int startTime;
     int duration;
+    int assigned;
 };
 
 struct operation_
@@ -28,5 +29,5 @@ struct jobshop_
 {
     struct job_ jobs[MAX];
     struct machine_ *machines[MAX];
-    struct scheduler_ scheduler[MAX][MAX];
+    struct scheduler_ *scheduler[MAX][MAX];
 } jobshop;
