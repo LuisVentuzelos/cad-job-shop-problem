@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
 #include "data-structs.h"
@@ -10,6 +9,8 @@ void allocateMachines(int numberOfMachines)
     for (int machine = 0; machine < numberOfMachines; machine++)
     {
         jobshop.machines[machine] = (struct machine_ *)malloc(sizeof(struct machine_));
+        jobshop.machines[machine]->startTime = 0;
+        jobshop.machines[machine]->duration = 0;
         jobshop.machines[machine]->id = machine;
     }
 }
@@ -21,6 +22,8 @@ void allocateScheduler(int numberOfJobs, int numberOfOperations)
         for (int operation = 0; operation < numberOfOperations; operation++)
         {
             jobshop.scheduler[job][operation] = (struct scheduler_ *)malloc(sizeof(struct scheduler_));
+            jobshop.scheduler[job][operation]->startTime = 0;
+            jobshop.scheduler[job][operation]->duration = 0;
             jobshop.scheduler[job][operation]->assigned = 0;
         }
     }
@@ -28,7 +31,6 @@ void allocateScheduler(int numberOfJobs, int numberOfOperations)
 
 void sheduleJobs(int numberOfJobs, int numberOfOperations, int numberOfMachines)
 {
-
     for (int operation = 0; operation < numberOfOperations; operation++)
     {
         for (int job = 0; job < numberOfJobs; job++)
