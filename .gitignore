@@ -54,4 +54,4 @@ job-shop
 job-shop-threads
 
 .DS_Store
-.output/
+output

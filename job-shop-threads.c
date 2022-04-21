@@ -5,7 +5,7 @@
 #include "data-structs.h"
 #include "file-operation.h"
 
-long long thread_count;
+int thread_count;
 pthread_mutex_t mutex;
 pthread_cond_t cond_var;
 
