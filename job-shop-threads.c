@@ -2,10 +2,11 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "data-structs.h"
 #include "file-operation.h"
 
-int thread_count;
+int thread_count = 3;
 pthread_mutex_t mutex;
 pthread_cond_t cond_var;
 
@@ -43,7 +44,7 @@ void allocateScheduler(int numberOfJobs, int numberOfOperations)
 void *sheduleJobs(void *rank)
 {
     long my_rank = (long)rank;
-    long long my_n = numberOfOperations / thread_count; // even division
+    long long my_n = numberOfOperations / thread_count;           // even division
     long long my_n_remainder = numberOfOperations % thread_count; // remainder
 
     long long my_first_i = my_n * my_rank + (my_rank < my_n_remainder ? my_rank : my_n_remainder);
@@ -55,7 +56,7 @@ void *sheduleJobs(void *rank)
     {
         for (int job = 0; job < numberOfJobs; job++)
         {
-            //while (0 < operation && (jobshop.scheduler[job][operation - 1]->assigned == 0 && (job + 1 < numberOfJobs && jobshop.scheduler[job + 1][operation - 1]->assigned == 0)))
+            // while (0 < operation && (jobshop.scheduler[job][operation - 1]->assigned == 0 && (job + 1 < numberOfJobs && jobshop.scheduler[job + 1][operation - 1]->assigned == 0)))
             while (0 < operation && jobshop.scheduler[job][operation - 1]->assigned == 0)
             {
                 pthread_cond_wait(&cond_var, &mutex);
@@ -99,31 +100,30 @@ void *sheduleJobs(void *rank)
     return NULL;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
-    #ifdef _OPENMP
-    #include <omp.h>
-    #define getClock() omp_get_wtime()
-        omp_set_num_threads(thread_count);
-    #else
-    #include <time.h>
-    #define getClock() ((double)clock() / CLOCKS_PER_SEC)
-    #endif
+
+#ifdef _OPENMP
+#include <omp.h>
+#define getClock() omp_get_wtime()
+    omp_set_num_threads(thread_count);
+#else
+#include <time.h>
+#define getClock() ((double)clock() / CLOCKS_PER_SEC)
+#endif
 
     pthread_t *thread_handles;
     long thread;
 
-    if (argc != 4)
+    if (argc < 4)
     {
-        printf("Usage: ./job-shop <input-file> <output-file> <thread_count>\n");
+        printf("Usage: ./job-shop-threads <input-file> <output-file> <thread_count>\n");
         return 1;
     }
 
-    char const *const fileName = argv[1];
-    char const *const outputFileName = argv[2];
-    thread_count = atoi(argv[3]);
+    // thread_count = atoi(argv[3]);
 
-    readFile(fileName, &numberOfMachines, &numberOfJobs, &numberOfOperations);
+    readFile(argv[1], &numberOfMachines, &numberOfJobs, &numberOfOperations);
 
     thread_handles = malloc(thread_count * sizeof(pthread_t));
 
@@ -150,12 +150,12 @@ int main(int argc, char *argv[])
     allocateMachines(numberOfMachines);
     allocateScheduler(numberOfJobs, numberOfOperations);
 
-    //get start time
+    // get start time
     double startTime = getClock();
 
     pthread_mutex_init(&mutex, NULL);
 
-    //prevent unecessary threads
+    // prevent unecessary threads
     long long thread_limit = thread_count < numberOfOperations ? thread_count : numberOfOperations;
 
     for (thread = 0; thread < thread_limit; thread++)
@@ -167,12 +167,12 @@ int main(int argc, char *argv[])
     free(thread_handles);
     pthread_mutex_destroy(&mutex);
 
-    //get end time
+    // get end time
     double endTime = getClock();
 
-    writeToFileAndPrettyPrint(outputFileName, numberOfJobs, numberOfOperations);
+    writeToFileAndPrettyPrint(argv[2], numberOfJobs, numberOfOperations);
 
-    //print time difference
+    // print time difference
     printf("################ EntryPoint Execution Time ##################\n");
     printf("\n");
     printf("Threads created: %lld\n", thread_limit);

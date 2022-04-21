@@ -69,20 +69,17 @@ void sheduleJobs(int numberOfJobs, int numberOfOperations, int numberOfMachines)
 
 int main(int argc, char *argv[])
 {
-    if (argc != 3)
+    if (argc < 3)
     {
         printf("Usage: ./job-shop <input-file> <output-file>\n");
         return 1;
     }
 
-    char const *const fileName = argv[1];
-    char const *const outputFileName = argv[2];
-
     int numberOfJobs = 0;
     int numberOfMachines = 0;
     int numberOfOperations = 0;
 
-    readFile(fileName, &numberOfMachines, &numberOfJobs, &numberOfOperations);
+    readFile(argv[1], &numberOfMachines, &numberOfJobs, &numberOfOperations);
 
     printf("################ EntryPoint Data ##################\n");
     printf("\n");
@@ -107,21 +104,21 @@ int main(int argc, char *argv[])
     allocateMachines(numberOfMachines);
     allocateScheduler(numberOfJobs, numberOfOperations);
 
-    //get start time
+    // get start time
     clock_t t = clock();
-    //double startTime = getClock();
+    // double startTime = getClock();
 
     sheduleJobs(numberOfJobs, numberOfOperations, numberOfMachines);
 
-    //get end time
+    // get end time
     t = clock() - t;
     double endTime = ((double)t) / CLOCKS_PER_SEC;
-    //clock_t end = clock() - start;
-    //double endTime = getClock();
+    // clock_t end = clock() - start;
+    // double endTime = getClock();
 
-    writeToFileAndPrettyPrint(outputFileName, numberOfJobs, numberOfOperations);
+    writeToFileAndPrettyPrint(argv[2], numberOfJobs, numberOfOperations);
 
-    //print time difference
+    // print time difference
     printf("################ EntryPoint Execution Time ##################\n");
     printf("\n");
     printf("Execution Time: %f\n", endTime);
