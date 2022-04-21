@@ -5,7 +5,7 @@
 #include "data-structs.h"
 #include "file-operation.h"
 
-long long thread_count = 3; // set to number threads
+long long thread_count = 7; // set to number threads
 pthread_mutex_t mutex;
 pthread_cond_t cond_var;
 
@@ -44,18 +44,10 @@ void *sheduleJobs(void *rank)
 {
     long my_rank = (long)rank;
     long long my_n = numberOfOperations / thread_count; // even division
-    long long my_n_remaider = numberOfOperations % thread_count; // remainder
-    if(my_n_remaider > 0)
-    {
-        my_n += my_n_remaider;
-    }
+    long long my_n_remainder = numberOfOperations % thread_count; // remainder
 
-    long long my_first_i = my_n * my_rank;
-    long long my_last_i = my_first_i + my_n;
-    if(my_rank == thread_count - 1)
-    {
-        my_last_i = numberOfOperations;
-    }
+    long long my_first_i = my_n * my_rank + (my_rank < my_n_remainder ? my_rank : my_n_remainder);
+    long long my_last_i = my_n * (my_rank + 1) + (my_rank + 1 < my_n_remainder ? my_rank + 1 : my_n_remainder);
 
     printf("Thread %ld: %lld -> %lld\n", my_rank, my_first_i, my_last_i);
 
