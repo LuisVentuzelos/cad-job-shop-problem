@@ -56,3 +56,5 @@ job-shop-threads
 .DS_Store
 
 .vscode/
+
+data/output/

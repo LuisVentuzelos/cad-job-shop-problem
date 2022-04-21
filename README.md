@@ -27,7 +27,7 @@ To compile the Application with threads run the following command
 To run the Application run the following command
 
 ```bash
-   ./job-shop data/input01 output/output01
+   ./job-shop data/input/input01 data/output/output01
 ```
 
 ## Run the Application with threads
@@ -35,7 +35,7 @@ To run the Application run the following command
 To run the Application run the following command
 
 ```bash
-   ./job-shop-threads data/input01 5 output/output01
+   ./job-shop-threads data/input/input01 data/output/output01 5
 ```
 
 ## Appendix
