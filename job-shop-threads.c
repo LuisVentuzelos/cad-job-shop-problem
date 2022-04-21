@@ -56,7 +56,6 @@ void *sheduleJobs(void *rank)
     {
         for (int job = 0; job < numberOfJobs; job++)
         {
-            // while (0 < operation && (jobshop.scheduler[job][operation - 1]->assigned == 0 && (job + 1 < numberOfJobs && jobshop.scheduler[job + 1][operation - 1]->assigned == 0)))
             while (0 < operation && jobshop.scheduler[job][operation - 1]->assigned == 0)
             {
                 pthread_cond_wait(&cond_var, &mutex);
@@ -91,9 +90,6 @@ void *sheduleJobs(void *rank)
 
             pthread_cond_broadcast(&cond_var);
             pthread_mutex_unlock(&mutex);
-
-            /* if (job == 2 && operation == 1)
-                printf("Job: %d\n Operation: %d\n Scheduler Start Time: %d\n Time before assginment:%d Time crux assginment:%d\n", job, operation, jobshop.scheduler[job][operation]->startTime, jobshop.scheduler[job][operation - 1]->assigned, jobshop.scheduler[job + 1][operation - 1]->assigned); */
         }
     }
 
