@@ -5,7 +5,7 @@
 #include "data-structs.h"
 #include "file-operation.h"
 
-long long thread_count = 7; // set to number threads
+long long thread_count;
 pthread_mutex_t mutex;
 pthread_cond_t cond_var;
 
@@ -101,27 +101,27 @@ void *sheduleJobs(void *rank)
 
 int main(int argc, char *argv[])
 {
-
-#ifdef _OPENMP
-#include <omp.h>
-#define getClock() omp_get_wtime()
-    omp_set_num_threads(thread_count);
-#else
-#include <time.h>
-#define getClock() ((double)clock() / CLOCKS_PER_SEC)
-#endif
+    #ifdef _OPENMP
+    #include <omp.h>
+    #define getClock() omp_get_wtime()
+        omp_set_num_threads(thread_count);
+    #else
+    #include <time.h>
+    #define getClock() ((double)clock() / CLOCKS_PER_SEC)
+    #endif
 
     pthread_t *thread_handles;
     long thread;
 
-    if (argc != 3)
+    if (argc != 4)
     {
-        printf("Usage: ./job-shop <input-file> <output-file>\n");
+        printf("Usage: ./job-shop <input-file> <output-file> <thread_count>\n");
         return 1;
     }
 
     char const *const fileName = argv[1];
     char const *const outputFileName = argv[2];
+    thread_count = atoi(argv[3]);
 
     readFile(fileName, &numberOfMachines, &numberOfJobs, &numberOfOperations);
 
@@ -150,16 +150,33 @@ int main(int argc, char *argv[])
     allocateMachines(numberOfMachines);
     allocateScheduler(numberOfJobs, numberOfOperations);
 
+    //get start time
+    double startTime = getClock();
+
     pthread_mutex_init(&mutex, NULL);
 
-    for (thread = 0; thread < thread_count; thread++)
+    //prevent unecessary threads
+    long long thread_limit = thread_count < numberOfOperations ? thread_count : numberOfOperations;
+
+    for (thread = 0; thread < thread_limit; thread++)
         pthread_create(&thread_handles[thread], NULL, sheduleJobs, (void *)thread);
 
-    for (thread = 0; thread < thread_count; thread++)
+    for (thread = 0; thread < thread_limit; thread++)
         pthread_join(thread_handles[thread], NULL);
 
     free(thread_handles);
     pthread_mutex_destroy(&mutex);
 
+    //get end time
+    double endTime = getClock();
+
     writeToFileAndPrettyPrint(outputFileName, numberOfJobs, numberOfOperations);
+
+    //print time difference
+    printf("################ EntryPoint Execution Time ##################\n");
+    printf("\n");
+    printf("Threads created: %lld\n", thread_limit);
+    printf("\n");
+    printf("Execution Time: %f\n", endTime - startTime);
+    printf("\n");
 }
