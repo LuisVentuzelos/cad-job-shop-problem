@@ -2,6 +2,8 @@
 
 threads: 
 	gcc-11 -Wall -fopenmp -lpthread job-shop-threads.c -o job-shop-threads
+	gcc-11 -Wall -fopenmp -lpthread job-shop-threads2.c -o job-shop-threads2
+
 
 
 normal: 
