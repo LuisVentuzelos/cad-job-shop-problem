@@ -44,8 +44,18 @@ void *sheduleJobs(void *rank)
 {
     long my_rank = (long)rank;
     long long my_n = numberOfOperations / thread_count; // even division
+    long long my_n_remaider = numberOfOperations % thread_count; // remainder
+    if(my_n_remaider > 0)
+    {
+        my_n += my_n_remaider;
+    }
+
     long long my_first_i = my_n * my_rank;
     long long my_last_i = my_first_i + my_n;
+    if(my_rank == thread_count - 1)
+    {
+        my_last_i = numberOfOperations;
+    }
 
     printf("Thread %ld: %lld -> %lld\n", my_rank, my_first_i, my_last_i);
 
@@ -53,7 +63,7 @@ void *sheduleJobs(void *rank)
     {
         for (int job = 0; job < numberOfJobs; job++)
         {
-            /*             while (0 < operation && (jobshop.scheduler[job][operation - 1]->assigned == 0 && (job + 1 < numberOfJobs && jobshop.scheduler[job + 1][operation - 1]->assigned == 0))) */
+            //while (0 < operation && (jobshop.scheduler[job][operation - 1]->assigned == 0 && (job + 1 < numberOfJobs && jobshop.scheduler[job + 1][operation - 1]->assigned == 0)))
             while (0 < operation && jobshop.scheduler[job][operation - 1]->assigned == 0)
             {
                 pthread_cond_wait(&cond_var, &mutex);
