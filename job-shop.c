@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "data-structs.h"
 #include "file-operation.h"
+
+#define getClock() ((double)clock() / CLOCKS_PER_SEC)
 
 void allocateMachines(int numberOfMachines)
 {
@@ -66,7 +69,6 @@ void sheduleJobs(int numberOfJobs, int numberOfOperations, int numberOfMachines)
 
 int main(int argc, char *argv[])
 {
-
     if (argc != 3)
     {
         printf("Usage: ./job-shop <input-file> <output-file>\n");
@@ -105,7 +107,23 @@ int main(int argc, char *argv[])
     allocateMachines(numberOfMachines);
     allocateScheduler(numberOfJobs, numberOfOperations);
 
+    //get start time
+    clock_t t = clock();
+    //double startTime = getClock();
+
     sheduleJobs(numberOfJobs, numberOfOperations, numberOfMachines);
 
+    //get end time
+    t = clock() - t;
+    double endTime = ((double)t) / CLOCKS_PER_SEC;
+    //clock_t end = clock() - start;
+    //double endTime = getClock();
+
     writeToFileAndPrettyPrint(outputFileName, numberOfJobs, numberOfOperations);
+
+    //print time difference
+    printf("################ EntryPoint Execution Time ##################\n");
+    printf("\n");
+    printf("Execution Time: %f\n", endTime);
+    printf("\n");
 }
