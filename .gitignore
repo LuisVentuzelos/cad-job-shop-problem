@@ -53,6 +53,8 @@ dkms.conf
 job-shop
 job-shop-threads
 job-shop-threads2
+job-shop-threads-jobs
+job-shop-threads-operations
 
 .DS_Store
 
