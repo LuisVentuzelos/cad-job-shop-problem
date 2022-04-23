@@ -1,8 +1,15 @@
 void readFile(char const *const filePath, int *machines, int *jobs, int *operations)
 {
     FILE *file = fopen(filePath, "r");
-    char line[1000];
-    int i, j = 0;
+    char line[100000];
+    int i = 0;
+    int j = 0;
+
+    if (file == NULL)
+    {
+        printf("Error opening file!\n");
+        exit(1);
+    }
 
     while (fgets(line, sizeof(line), file))
     {

@@ -6,7 +6,7 @@
 #include "data-structs.h"
 #include "file-operation.h"
 
-int thread_count = 3;
+int thread_count = 1000;
 pthread_mutex_t mutex;
 pthread_cond_t cond_var;
 
@@ -23,7 +23,7 @@ void *sheduleJobs(void *rank)
     long long my_first_i = my_n * my_rank + (my_rank < my_n_remainder ? my_rank : my_n_remainder);
     long long my_last_i = my_n * (my_rank + 1) + (my_rank + 1 < my_n_remainder ? my_rank + 1 : my_n_remainder);
 
-    printf("Thread %ld: %lld -> %lld\n", my_rank, my_first_i, my_last_i);
+    // printf("Thread %ld: %lld -> %lld\n", my_rank, my_first_i, my_last_i);
 
     for (int job = my_first_i; job < my_last_i; job++)
     {
