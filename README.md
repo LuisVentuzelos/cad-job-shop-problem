@@ -35,7 +35,13 @@ To run the Application run the following command
 To run the Application run the following command
 
 ```bash
-   ./job-shop-threads data/input/input01 data/output/output01 5
+   ./job-shop-threads-jobs data/input/input01 data/output/output01 5
+```
+
+or
+
+```bash
+   ./job-shop-threads-operations data/input/input01 data/output/output01 5
 ```
 
 ## Appendix

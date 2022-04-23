@@ -7,31 +7,6 @@
 
 #define getClock() ((double)clock() / CLOCKS_PER_SEC)
 
-void allocateMachines(int numberOfMachines)
-{
-    for (int machine = 0; machine < numberOfMachines; machine++)
-    {
-        jobshop.machines[machine] = (struct machine_ *)malloc(sizeof(struct machine_));
-        jobshop.machines[machine]->startTime = 0;
-        jobshop.machines[machine]->duration = 0;
-        jobshop.machines[machine]->id = machine;
-    }
-}
-
-void allocateScheduler(int numberOfJobs, int numberOfOperations)
-{
-    for (int job = 0; job < numberOfJobs; job++)
-    {
-        for (int operation = 0; operation < numberOfOperations; operation++)
-        {
-            jobshop.scheduler[job][operation] = (struct scheduler_ *)malloc(sizeof(struct scheduler_));
-            jobshop.scheduler[job][operation]->startTime = 0;
-            jobshop.scheduler[job][operation]->duration = 0;
-            jobshop.scheduler[job][operation]->assigned = 0;
-        }
-    }
-}
-
 void sheduleJobs(int numberOfJobs, int numberOfOperations, int numberOfMachines)
 {
     for (int operation = 0; operation < numberOfOperations; operation++)
@@ -119,7 +94,7 @@ int main(int argc, char *argv[])
     writeToFileAndPrettyPrint(argv[2], numberOfJobs, numberOfOperations);
 
     // print time difference
-    printf("################ EntryPoint Execution Time ##################\n");
+    printf("################ Scheduler Execution Time ##################\n");
     printf("\n");
     printf("Execution Time: %f\n", endTime);
     printf("\n");
