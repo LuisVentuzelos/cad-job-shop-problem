@@ -52,6 +52,10 @@ Mkfile.old
 dkms.conf
 job-shop
 job-shop-threads
+job-shop-threads2
 
 .DS_Store
-output
+
+.vscode/
+
+data/output/

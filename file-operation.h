@@ -1,4 +1,4 @@
-void readFile(const char *filePath, int *machines, int *jobs, int *operations)
+void readFile(char const *const filePath, int *machines, int *jobs, int *operations)
 {
     FILE *file = fopen(filePath, "r");
     char line[1000];
@@ -32,7 +32,7 @@ void readFile(const char *filePath, int *machines, int *jobs, int *operations)
     fclose(file);
 }
 
-void writeToFileAndPrettyPrint(const char *filePath, int jobs, int operations)
+void writeToFileAndPrettyPrint(char const *const filePath, int jobs, int operations)
 {
     FILE *fptr;
 
