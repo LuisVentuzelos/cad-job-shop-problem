@@ -46,9 +46,9 @@ void writeToFileAndPrettyPrint(char const *const filePath, int jobs, int operati
     fptr = fopen(filePath, "w");
     char result[50];
 
-    printf("\n");
-    printf("################ Scheduler Atribution ##################\n");
-    printf("\n");
+    /*    printf("\n");
+       printf("################ Scheduler Atribution ##################\n");
+       printf("\n"); */
 
     for (int i = 0; i < jobs; i++)
     {
@@ -58,12 +58,12 @@ void writeToFileAndPrettyPrint(char const *const filePath, int jobs, int operati
 
             sprintf(result, "%d", startTime);
 
-            printf("%s ", result);
+            // printf("%s ", result);
             fprintf(fptr, "%s ", result);
         }
-        printf("\n");
+        // printf("\n");
         fprintf(fptr, "\n");
     }
 
-    printf("\n");
+    // printf("\n");
 }

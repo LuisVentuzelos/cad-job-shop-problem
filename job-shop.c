@@ -56,26 +56,26 @@ int main(int argc, char *argv[])
 
     readFile(argv[1], &numberOfMachines, &numberOfJobs, &numberOfOperations);
 
-    printf("################ EntryPoint Data ##################\n");
-    printf("\n");
+    /*  printf("################ EntryPoint Data ##################\n");
+     printf("\n");
 
-    printf("Number of Jobs: %d\n", numberOfJobs);
-    printf("Number of Machines: %d\n", numberOfMachines);
-    printf("Number of Operations: %d\n", numberOfOperations);
+     printf("Number of Jobs: %d\n", numberOfJobs);
+     printf("Number of Machines: %d\n", numberOfMachines);
+     printf("Number of Operations: %d\n", numberOfOperations);
 
-    printf("\n");
-    printf("################ EntryPoint Matrix ##################\n");
-    printf("\n");
+     printf("\n");
+     printf("################ EntryPoint Matrix ##################\n");
+     printf("\n");
 
-    for (int i = 0; i < numberOfJobs; i++)
-    {
-        for (int j = 0; j < numberOfOperations; j++)
-        {
-            printf("(%d,%d)\t", jobshop.jobs[i].operations[j].machineId, jobshop.jobs[i].operations[j].duration);
-        }
-        printf("\n");
-    }
-
+     for (int i = 0; i < numberOfJobs; i++)
+     {
+         for (int j = 0; j < numberOfOperations; j++)
+         {
+             printf("(%d,%d)\t", jobshop.jobs[i].operations[j].machineId, jobshop.jobs[i].operations[j].duration);
+         }
+         printf("\n");
+     }
+  */
     allocateMachines(numberOfMachines);
     allocateScheduler(numberOfJobs, numberOfOperations);
 
@@ -94,8 +94,8 @@ int main(int argc, char *argv[])
     writeToFileAndPrettyPrint(argv[2], numberOfJobs, numberOfOperations);
 
     // print time difference
-    printf("################ Scheduler Execution Time ##################\n");
-    printf("\n");
-    printf("Execution Time: %f\n", endTime);
-    printf("\n");
+    /*     printf("################ Scheduler Execution Time ##################\n");
+        printf("\n");
+        printf("\n"); */
+    printf("%f\n", endTime);
 }

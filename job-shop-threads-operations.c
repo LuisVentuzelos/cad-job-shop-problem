@@ -6,7 +6,7 @@
 #include "data-structs.h"
 #include "file-operation.h"
 
-int thread_count = 1000;
+int thread_count = 1;
 pthread_mutex_t mutex;
 pthread_cond_t cond_var;
 
@@ -96,25 +96,25 @@ int main(int argc, char **argv)
 
     thread_handles = malloc(thread_count * sizeof(pthread_t));
 
-    printf("################ EntryPoint Data ##################\n");
-    printf("\n");
+    /*  printf("################ EntryPoint Data ##################\n");
+     printf("\n");
 
-    printf("Number of Jobs: %d\n", numberOfJobs);
-    printf("Number of Machines: %d\n", numberOfMachines);
-    printf("Number of Operations: %d\n", numberOfOperations);
+     printf("Number of Jobs: %d\n", numberOfJobs);
+     printf("Number of Machines: %d\n", numberOfMachines);
+     printf("Number of Operations: %d\n", numberOfOperations);
 
-    printf("\n");
-    printf("################ EntryPoint Matrix ##################\n");
-    printf("\n");
+     printf("\n");
+     printf("################ EntryPoint Matrix ##################\n");
+     printf("\n");
 
-    for (int i = 0; i < numberOfJobs; i++)
-    {
-        for (int j = 0; j < numberOfOperations; j++)
-        {
-            printf("(%d,%d)\t", jobshop.jobs[i].operations[j].machineId, jobshop.jobs[i].operations[j].duration);
-        }
-        printf("\n");
-    }
+     for (int i = 0; i < numberOfJobs; i++)
+     {
+         for (int j = 0; j < numberOfOperations; j++)
+         {
+             printf("(%d,%d)\t", jobshop.jobs[i].operations[j].machineId, jobshop.jobs[i].operations[j].duration);
+         }
+         printf("\n");
+     } */
 
     allocateMachines(numberOfMachines);
     allocateScheduler(numberOfJobs, numberOfOperations);
@@ -142,10 +142,11 @@ int main(int argc, char **argv)
     writeToFileAndPrettyPrint(argv[2], numberOfJobs, numberOfOperations);
 
     // print time difference
-    printf("################ Scheduler Execution Time ##################\n");
-    printf("\n");
-    printf("Threads created: %lld\n", thread_limit);
-    printf("\n");
-    printf("Execution Time: %f\n", endTime - startTime);
-    printf("\n");
+    /*     printf("################ Scheduler Execution Time ##################\n");
+        printf("\n");
+        printf("Threads created: %lld\n", thread_limit);
+        printf("\n");
+        printf("Execution Time: %f\n", endTime - startTime);
+        printf("\n"); */
+    printf("%f\n", endTime - startTime);
 }
