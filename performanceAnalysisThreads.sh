@@ -1,6 +1,6 @@
 #Thread Jobs
 echo "Executing Job Shop Jobs Parrallized"
-for ((i=1; i<=6; i=i+1))
+for ((i=1; i<=4; i=i+1))
 do 
       echo "Executing Test $i"
       
@@ -13,7 +13,7 @@ done
 
 #Threads Operations
 echo "Executing Job Shop Operations Parrallized"
-for ((i=1; i<=6; i=i+1))
+for ((i=1; i<=4; i=i+1))
 do 
       echo "Executing Test $i"
       
