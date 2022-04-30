@@ -13,16 +13,18 @@ void readFile(char const *const filePath, int *machines, int *jobs, int *operati
 
     while (fgets(line, sizeof(line), file))
     {
+        char *token = strtok(line, " ");
         if (i == 0)
-            *machines = atoi(line);
-        else if (i == 1)
-            *jobs = atoi(line);
-        else if (i == 2)
-            *operations = atoi(line);
+        {
+            *machines = atoi(token);
+            token = strtok(NULL, " ");
+
+            *jobs = atoi(token);
+            *operations = atoi(token);
+        }
         else
         {
             int k = 0;
-            char *token = strtok(line, " ");
             for (k = 0; k < *operations; k++)
             {
                 jobshop.jobs[j].operations[k].machineId = atoi(token);
