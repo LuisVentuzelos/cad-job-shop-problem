@@ -6,7 +6,7 @@
 #include "data-structs.h"
 #include "file-operation.h"
 
-int thread_count = 1;
+int thread_count = 10;
 pthread_mutex_t mutex;
 pthread_cond_t cond_var;
 
@@ -29,23 +29,24 @@ void *sheduleJobs(void *rank)
     {
         for (int job = 0; job < numberOfJobs; job++)
         {
+            int totalTime = 0;
+            int operationBeforeStartTime = 0;
+
+            int machineId = jobshop.jobs[job].operations[operation].machineId;
+
+            pthread_mutex_lock(&mutex);
+
             while (0 < operation && jobshop.scheduler[job][operation - 1]->assigned == 0)
             {
                 pthread_cond_wait(&cond_var, &mutex);
             }
 
-            int totalTime = 0;
-            int operationBeforeStartTime = 0;
-
-            int machineId = jobshop.jobs[job].operations[operation].machineId;
             int operationBeforeDuration = jobshop.jobs[job].operations[operation - 1].duration;
 
             if (operation > 0)
                 operationBeforeStartTime = jobshop.scheduler[job][operation - 1]->startTime;
 
             int operationTotalBeforeTime = operationBeforeStartTime + operationBeforeDuration;
-
-            pthread_mutex_lock(&mutex);
 
             int currentMachineTime = jobshop.machines[machineId]->startTime + jobshop.machines[machineId]->duration;
 
