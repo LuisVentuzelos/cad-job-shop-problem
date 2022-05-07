@@ -16,19 +16,21 @@ void readFile(char const *const filePath, int *machines, int *jobs, int *operati
         char *token = strtok(line, " ");
         if (i == 0)
         {
-            *machines = atoi(token);
+            *jobs = atoi(token);
             token = strtok(NULL, " ");
 
-            *jobs = atoi(token);
+            *machines = atoi(token);
             *operations = atoi(token);
         }
         else
         {
+
             int k = 0;
             for (k = 0; k < *operations; k++)
             {
                 jobshop.jobs[j].operations[k].machineId = atoi(token);
                 token = strtok(NULL, " ");
+
                 jobshop.jobs[j].operations[k].duration = atoi(token);
                 token = strtok(NULL, " ");
             }

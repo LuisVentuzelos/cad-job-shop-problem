@@ -6,9 +6,8 @@
 #include "data-structs.h"
 #include "file-operation.h"
 
-int thread_count = 1000;
+int thread_count = 4;
 pthread_mutex_t mutex;
-pthread_cond_t cond_var;
 
 int numberOfJobs;
 int numberOfMachines;
